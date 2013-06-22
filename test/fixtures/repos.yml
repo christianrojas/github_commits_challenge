@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  account: MyString
+  repo: MyString
+  chain_obj_notation: MyText
+
+two:
+  account: MyString
+  repo: MyString
+  chain_obj_notation: MyText
