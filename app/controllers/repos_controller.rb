@@ -8,7 +8,24 @@ class ReposController < ApplicationController
     end
   end
 
+  def show
+    respond_with Repo.find(params[:id])
+  end
+
   def create
-    respond_with Repo.create(params[:repo])
+    respond_with Repo.create!(params.permit(:repo, :account))
+  end
+
+  def update
+    respond_with Repo.update(params[:id], repo_params)
+  end
+
+  def destroy
+    respond_with Repo.destroy(params[:id])
+  end
+
+private
+  def repo_params
+    params[:repo]
   end
 end
