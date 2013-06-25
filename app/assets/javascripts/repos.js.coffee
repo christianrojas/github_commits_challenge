@@ -104,6 +104,4 @@ App.factory "Repo", ["$resource", ($resource) ->
     root.json_objs += ']' # close json Object
     
     register_repo() # We are ready to register the new repo request in to DB
-          
-
 ]

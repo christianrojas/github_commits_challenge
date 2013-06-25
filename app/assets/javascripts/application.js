@@ -14,7 +14,5 @@
 //= require angular
 //= require angular-resource
 //= require bootstrap
-//= require raphael
-//= require morris
 //= require turbolinks
 //= require_tree .
