@@ -1,20 +1,13 @@
 <div class="row">
   <div class="span12">
     <div class="page-header">
-      <h1>Git Commits <small>Density Graph</small></h1>
+      <h2>Github Repo Commits <small>Density Graph</small></h2>
     </div>
     <div ng-controller="tangoSourceChallengeCtrl">
-      <form ng-submit="analyzeRepo()" class="input-append">
-        <input class="span6" id="appendedInputButton" type="text" placeholder="Type the account and repository name here 'account/repository'" ng-model="newRepo.account_repo">
-        <input type="submit" value="Analizar" class="btn">
+      <form ng-submit="process_request()" class="form-search">
+        <input class="span6" id="appendedInputButton" type="text" placeholder="Type the account and repository name here 'account/repository'" ng-model="newQuery.query">
+        <input type="submit" value="Analizar" class="btn btn btn-info">
       </form>
     </div>
-    <hr>
-    <h4>Repos registrados</h4>
-    <ul>
-      <li ng-repeat="repo in repos">
-        {{repo.account}}/{{repo.repo_name}}
-      </li>
-    </ul>
   </div>
 </div>
