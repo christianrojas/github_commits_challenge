@@ -1,0 +1,13 @@
+.row
+  .span9.offset1
+    .page-header
+      %h2
+        Github Repo Commits
+        %small Density Graph
+    %div{"ng-controller" => "tangoSourceChallengeCtrl"}
+      %form.form-search{"ng-submit" => "process_request()"}
+        %input#appendedInputButton.span6{"ng-model" => "newQuery.query", :placeholder => "Type the account and repository name here 'account/repository'", :type => "text"}
+          %input.btn.btn.btn-info{:type => "submit", :value => "Analizar"}
+.row
+  .span9.offset1
+    #graphCommitsDay
