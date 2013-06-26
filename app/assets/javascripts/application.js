@@ -14,5 +14,7 @@
 //= require angular
 //= require angular-resource
 //= require bootstrap
+//= require moment
+//= require Chart
 //= require turbolinks
 //= require_tree .
