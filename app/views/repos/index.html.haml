@@ -1,13 +1,45 @@
 .row
-  .span9.offset1
+  .span8.offset2
     .page-header
       %h2
-        Github Repo Commits
-        %small Density Graph
-    %div{"ng-controller" => "tangoSourceChallengeCtrl"}
-      %form.form-search{"ng-submit" => "process_request()"}
-        %input#appendedInputButton.span6{"ng-model" => "newQuery.query", :placeholder => "Type the account and repository name here 'account/repository'", :type => "text"}
-          %input.btn.btn.btn-info{:type => "submit", :value => "Analizar"}
+        GitHub
+        %small Commits Density Graph
+/ /title
+
 .row
-  .span9.offset1
-    
+  .span8.offset2
+    %div
+      %form.form-search{"ng-submit" => "process_request()"}
+        %input#appendedInputButton.span7{"ng-model" => "newQuery.query", :placeholder => "Type the account and repository name here 'account/repository'", :type => "text"}
+        %input.btn.btn.btn-success{:type => "submit", :value => "Analyze"}
+/ /form
+
+.row
+  .span8.offset2
+    .well
+      = image_tag 'repo.png'
+      %span#repoName &nbsp; christianrojas /
+      %b firewool
+      &nbsp; &nbsp;
+      = image_tag 'commits.png'
+      %b 132 
+      commits
+      &nbsp; &nbsp;
+      = image_tag 'contributor.png'
+      %b 6
+      contributors
+/ /repo status
+
+.row
+  .span8.offset2
+    %br
+    %span#pickDateSelectLabel Pick a date:
+    &nbsp;
+    %select.span4
+      %option{ "ng-repeat" => "day in days" } {{day.day}}
+    / /available days select
+    %br
+    %br
+
+    %canvas#canvas{:height => "310", :width => "620"}
+    / /graph

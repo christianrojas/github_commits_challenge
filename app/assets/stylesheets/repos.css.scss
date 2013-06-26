@@ -1,3 +1,30 @@
-// Place all the styles related to the repos controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+
+span#repoName{
+  line-height: 16px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+span.commitMessage{
+  line-height: 15px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+span.commitAuthor{
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.scrollspy-example {
+  height: 200px;
+  overflow: auto;
+  position: relative;
+}
+
+span#pickDateSelectLabel{
+  position: relative;
+  font-size: 14px;
+  font-weight: 600;
+  top: -5px;
+}
