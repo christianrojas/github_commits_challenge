@@ -13,19 +13,11 @@ class ReposController < ApplicationController
   end
 
   def create
-    respond_with Repo.create(repo_parameters)
-  end
-
-  def update
-    respond_with Repo.update(params[:id], repo_parameters)
-  end
-
-  def destroy
-    respond_with Repo.destroy(params[:id])
+    respond_with Repo.create(repo_params)
   end
 
 private
-  def repo_parameters
+  def repo_params
     params.permit(:repo, :account, :chain_obj_notation)
   end
 end
