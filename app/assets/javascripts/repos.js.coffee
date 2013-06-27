@@ -58,23 +58,69 @@ App.factory "Repo", ["$resource", ($resource) ->
     
     # Fix date string for all commits
     for commit in root.json_objs
-      crude_days_array.push(commit.commit.author.date.substr(0,10))
+      crude_days_array.push(moment(commit.commit.author.date))
 
     # Get the unique days
     $.each crude_days_array, (i, value) -> 
-      uniqueDays.push value  if $.inArray(value, uniqueDays) is -1
+      value = value.format('YYYY-MM-DD')
+      uniqueDays.push value if $.inArray(value, uniqueDays) is -1
 
     $scope.days = []
     for day in uniqueDays
       formated = moment(day).format("dddd, MMMM D YYYY")
       $scope.days.push({day: formated, value: day })
 
-  get_day_commits = (day) ->
-    commits_by_day = {}
-    for commit in root.json_objs
-      if day is commit.commit.author.date.substr(0,10)
-        commit.commit.author.date
+    $scope.dayPicker = $scope.days[0] # Initial value for the select
 
+  get_day_commits = (day) ->
+    day_commits = []
+    for commit in root.json_objs
+      if moment(commit.commit.author.date).format('YYYY-MM-DD') is day.value
+        day_commits.push(commit)
+    return day_commits
+
+  $scope.make_day_graph = () ->
+    hours   = []
+    count   = []
+    counter = 0 
+    size    = get_day_commits($scope.dayPicker).length
+    $.each get_day_commits($scope.dayPicker).reverse(), (i, value) -> # Get the unique hours
+      value = moment(value.commit.author.date).format('ha')
+      
+      if $.inArray(value, hours) is -1
+        hours.push value
+        count.push counter if counter isnt 0
+        counter = 0
+        counter++
+        count.push counter if i is size - 1
+      else
+        counter++
+        count.push counter if i is size - 1
+
+    $("#container").highcharts
+      title:
+        text: "Daily commits per hour"
+        x: -20 #center
+      subtitle:
+        text: "Source: Github Repository [ christianrojas/firewool ]"
+        x: -20
+      xAxis:
+        categories: hours # Unique hours array
+      yAxis:
+        title:
+          text: "Commits (Hour)"
+        plotLines: [
+          value: 0
+          width: 1
+        ]
+      tooltip:
+        enabled: true
+      legend: false
+      series: [
+        name: "Commits"
+        data: count # Count by hours array
+        color: "#2eaced"
+      ]
 
   register_repo = -> # Create a new record in the database
     input = root.query.split('/')
@@ -128,21 +174,6 @@ App.factory "Repo", ["$resource", ($resource) ->
     root.json_objs += ']' # close json Object
     
     register_repo() # We are ready to register the new repo request in to DB
-  
 
   get_repo_data(53) # <---- DELETE THIS LINE / JUST TESTING
 ]
-
-
-$ -> 
-  lineChartData =
-    labels: ["8am", "10am", "2pm", "3pm", "8pm", "9pm", "11pm"]
-    datasets: [
-      fillColor: "rgba(245, 245, 245, 0.550)"
-      strokeColor: "rgba(46, 172, 237, 1.000)"
-      pointColor: "rgba(59, 89, 152, 1.000)"
-      pointStrokeColor: "#fff"
-      data: [20, 26, 16, 19, 20, 27, 23]
-    ]
-
-  myLine = new Chart(document.getElementById("canvas").getContext("2d")).Line(lineChartData)
