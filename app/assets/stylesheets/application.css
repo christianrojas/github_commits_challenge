@@ -11,5 +11,6 @@
  *= require_self
  *= require bootstrap
  *= require overwrite_bootstrap
+ *= require morris
  *= require_tree .
  */
