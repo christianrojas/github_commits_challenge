@@ -1,4 +1,4 @@
-%a{:href => "https://github.com/christianrojas/tangosource_challenge"}
+%a{:href => "https://github.com/christianrojas/tangosource_challenge", target: '_blank'}
   %img{:alt => "Fork me on GitHub", :src => "https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png", :style => "position: absolute; top: 0; right: 0; border: 0;"}
 
 .row
@@ -14,56 +14,65 @@
     %div
       %form.form-search{"ng-submit" => "process_request()"}
         %input#appendedInputButton.span7{"ng-model" => "newQuery.query", :placeholder => "Type the account and repository name here 'account/repository'", :type => "text"}
-        %input.btn.btn.btn-success{:type => "submit", :value => "Look at"}
+        %input.btn.btn.btn-success.disabled{:type => "submit", :value => "Analyze"}
 / /form
 
-.row.hide
-  %br
-  .span2.offset2
-    .pull-right#blankStateArrow= image_tag 'arrow.png'
-  .span6
-    .alert.alert-block.alert-info.fade.in
-      %h4.alert-heading Welcome
-      %p This app will show you the commits density by day of the given repository. Kick things off by passing the account name and repository this way 'account/repo'.
-/ /blank state
+%section#notifications.hide
+  .row
+    .span8.offset2
+      .alert.alert-error
+        %strong Ups!
+        I could not find what you're asking me. Try again!
 
-.row
-  .span8.offset2
-    .well
-      = image_tag 'repo.png'
-      %span#repoName &nbsp; christianrojas /
-      %b firewool
-      &nbsp; &nbsp;
-      = image_tag 'commits.png'
-      %b 132 
-      commits
-      &nbsp; &nbsp;
-      = image_tag 'contributor.png'
-      %b 6
-      contributors
-/ /repo status
+%section#blankState
+  .row
+    .span2.offset2
+      .pull-right#blankStateArrow= image_tag 'arrow.png'
+    .span6
+      .alert.alert-block.alert-info.fade.in
+        %h4.alert-heading Welcome
+        %p This Application will show you the commit density of a day  of the given repository. Start by passing the account name and repository this way 'account/repo' and  clic the Look at green button.
+  / /blank state
 
-.row
-  .span8.offset2
-    %br
-    %div#daysSelect.pull-right
-      %span#pickDateSelectLabel Pick a date:
-      &nbsp;
-      %select.span4{"ng-model" => "dayPicker", "ng-options" => "d.day for d in days", "ng-change" => "make_day_graph()"}
-        %option{:value => ""}
-      / /available days select
-    %br
-    %br
-    %hr
-    #container{:style => "min-width: 400px; height: 400px; margin: 0 auto"}
-    / /graph
+%section#queryResults.hide
+  .row
+    .span8.offset2
+      .well
+        = image_tag 'repo.png'
+        %span#repoName &nbsp; christianrojas /
+        %b firewool
+        &nbsp; &nbsp;
+        = image_tag 'commits.png'
+        %b 132 
+        commits
+        &nbsp; &nbsp;
+        = image_tag 'contributor.png'
+        %b 6
+        contributors
+  / /repo status
+
+  .row
+    .span8.offset2
+      %br
+      %div#daysSelect.pull-right
+        %span#pickDateSelectLabel Pick a date:
+        &nbsp;
+        %select.span4{"ng-model" => "dayPicker", "ng-options" => "d.day for d in days", "ng-change" => "make_day_graph()"}
+          %option{:value => ""}
+        / /available days select
+      %br
+      %br
+      %hr
+      #container{:style => "min-width: 400px; height: 400px; margin: 0 auto"}
+      / /graph
 
 .row
   .span8.offset2  
     %hr
-    %p.muted
-      Diseñado y desarrollado por 
-      = link_to '@christianrojas', 'twitter.com/christianrojas', target: ' _blank'
-      para 
-      = link_to '@tangosource', 'twitter.com/tangosource', target: ' _blank'
+    %footer
+      Designed and developed by
+      = link_to '@christianrojas', 'http://www.twitter.com/christianrojas', target: '_blank'
+      this is a challenge for
+      = link_to '@tangosource', 'http://www.twitter.com/tangosource', target: '_blank'
+
   / /footer
