@@ -15,6 +15,7 @@
 //= require angular-resource
 //= require bootstrap
 //= require moment
-//= require Chart
+//= require highcharts
+//= require exporting
 //= require turbolinks
 //= require_tree .
