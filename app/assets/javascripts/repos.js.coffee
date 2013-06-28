@@ -31,6 +31,16 @@ App.factory "Repo", ["$resource", ($resource) ->
     root.query = $scope.newQuery.query # Sets the global variable 
     check_repos_list()
 
+  $scope.validate_input_query = ->
+    # Regular Expresion to validate 'account/repo'
+    # Only one / and - inside words
+    regExp = /^\b[a-zA-Z0-9\-]+\b\/\b[a-zA-Z0-9\-]+\b$/
+    if regExp.test($scope.newQuery.query)
+      $scope.inputError = false
+    else
+      $scope.inputError = true
+      console.log regExp.test($scope.newQuery.query)
+
   # LOCAL METHODS
   # -------------------------------------------------- 
   check_repos_list = -> # Find if the new repo request already exist
