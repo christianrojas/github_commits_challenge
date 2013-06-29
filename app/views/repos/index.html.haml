@@ -12,18 +12,21 @@
 
 .row
   .span8.offset2
+    %h4 christianrojas/firewool-
     %div
       %form.form-search{"ng-submit" => "process_request()", name: 'newQueryForm'}
-        %input#accountRepoQuery.span7{name: "queryField", "ng-model" => "newQuery.query", :placeholder => "Type the account and repository name here 'account/repository'", :type => "text", "ng-change" => "validate_input_query()", "ng-class" => "{ errorInput: inputError }"}
+        %input#accountRepoQuery.span7{name: "queryField", "ng-model" => "newQuery.query", :placeholder => "account/repository", :type => "text", "ng-change" => "validate_input_query()", "ng-class" => "{ errorInput: inputError }"}
         %input.btn.btn.btn-success.disabled{:type => "submit", :value => "Analyze", "ng-class" => "{disabled: inputError}"}
       / /form
 
 %section#notifications.hide
   .row
     .span8.offset2
-      .alert.alert-error
+      #errorNotification.alert.alert-error.hide
         %strong Ups!
         I could not find what you're asking me. Try again!
+      #infoNotification.alert.alert-info.hide
+        We are analyzing the repository...
 
 %section#blankState
   .row
@@ -32,7 +35,7 @@
     .span6
       .alert.alert-block.alert-info.fade.in
         %h4.alert-heading Welcome
-        %p This Application will show you the commit density of a day  of the given repository. Start by passing the account name and repository this way 'account/repo' and  clic the Look at green button.
+        %p This Application will show you the commit density of a day from the given repository. Start by passing the account name and repository name then clic the Analyze green button.
   / /blank state
 
 %section#queryResults.hide
@@ -40,16 +43,12 @@
     .span8.offset2
       .well
         = image_tag 'repo.png'
-        %span#repoName &nbsp; christianrojas /
-        %b firewool
+        %span#repoName &nbsp; {{accountRepo[0]}} /
+        %b {{accountRepo[1]}}
         &nbsp; &nbsp;
         = image_tag 'commits.png'
-        %b 132 
+        %b {{commitsCount}}
         commits
-        &nbsp; &nbsp;
-        = image_tag 'contributor.png'
-        %b 6
-        contributors
   / /repo status
 
   .row
@@ -67,6 +66,18 @@
       #container{:style => "min-width: 400px; height: 400px; margin: 0 auto"}
       / /graph
 
+      %table.table.table-condensed
+        %thead
+          %tr
+            %th.span1
+            %th.span2 Contibuter
+            %th Commit
+        %tbody
+          %tr{"ng-repeat" => "commit in commits"}
+            %td= image_tag("https://secure.gravatar.com/avatar/{{commit.author.gravatar_id}}", size: '30x30')
+            %td.commitAuthorName= link_to "{{commit.commit.author.name}}", "{{commit.author.html_url}}", target: '_blank'
+            %td= link_to "{{commit.commit.message}}", "{{commit.html_url}}", target: '_blank'
+ 
 .row
   .span8.offset2  
     %hr

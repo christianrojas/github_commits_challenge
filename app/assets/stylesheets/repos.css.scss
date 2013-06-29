@@ -32,17 +32,13 @@ span#graphTitle{
 
 // commits table
 // ---------------------------------- 
-span.commitMessage{
-  line-height: 15px;
-  font-size: 12px;
+.commitAuthorName{
+  font-size: 14px;
   font-weight: 600;
+  & a{
+    color: #2c3538;
+  }
 }
-
-span.commitAuthor{
-  font-size: 12px;
-  font-weight: 400;
-}
-
 // blank state message
 // ---------------------------------- 
 #blankStateArrow{
