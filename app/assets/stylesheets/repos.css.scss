@@ -6,9 +6,9 @@ input.errorInput{
 
 // repo status
 // ---------------------------------- 
-span#repoName{
+a#repoName{
   line-height: 16px;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 600;
 }
 
@@ -19,7 +19,7 @@ div#daysSelect{
     position: relative;
     font-size: 14px;
     font-weight: 600;
-    top: -5px;
+    // top: -5px;
   }  
 }
 
@@ -32,6 +32,10 @@ span#graphTitle{
 
 // commits table
 // ---------------------------------- 
+img.commitAuthorImage{
+  border-radius: 5px;
+}
+
 .commitAuthorName{
   font-size: 14px;
   font-weight: 600;
@@ -39,6 +43,7 @@ span#graphTitle{
     color: #2c3538;
   }
 }
+
 // blank state message
 // ---------------------------------- 
 #blankStateArrow{

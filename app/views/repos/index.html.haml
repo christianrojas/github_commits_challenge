@@ -12,7 +12,6 @@
 
 .row
   .span8.offset2
-    %h4 christianrojas/firewool-
     %div
       %form.form-search{"ng-submit" => "process_request()", name: 'newQueryForm'}
         %input#accountRepoQuery.span7{name: "queryField", "ng-model" => "newQuery.query", :placeholder => "account/repository", :type => "text", "ng-change" => "validate_input_query()", "ng-class" => "{ errorInput: inputError }"}
@@ -41,40 +40,38 @@
 %section#queryResults.hide
   .row
     .span8.offset2
-      .well
-        = image_tag 'repo.png'
-        %span#repoName &nbsp; {{accountRepo[0]}} /
-        %b {{accountRepo[1]}}
-        &nbsp; &nbsp;
-        = image_tag 'commits.png'
-        %b {{commitsCount}}
-        commits
+      = image_tag 'repo.png'
+      %span= link_to "{{accountRepo[0]}}", "http://www.github.com/{{accountRepo[0]}}", target: '_blank'
+      \/
+      = link_to "{{accountRepo[1]}}", "http://www.github.com/{{accountRepo[0]}}/{{accountRepo[1]}}", target: '_blank', id: "repoName"
+      &nbsp; &nbsp;
+      = image_tag 'commits.png'
+      %b {{commitsCount}}
+      commits
+      %div#daysSelect.pull-right
+        %span#pickDateSelectLabel Pick a date:
+        &nbsp;
+        %br
+        %select{"ng-model" => "dayPicker", "ng-options" => "d.day for d in days", "ng-change" => "make_day_graph()"}
+          %option{:value => ""}
+
   / /repo status
 
   .row
     .span8.offset2
-      %br
-      %div#daysSelect.pull-right
-        %span#pickDateSelectLabel Pick a date:
-        &nbsp;
-        %select.span4{"ng-model" => "dayPicker", "ng-options" => "d.day for d in days", "ng-change" => "make_day_graph()"}
-          %option{:value => ""}
-        / /available days select
-      %br
-      %br
       %hr
       #container{:style => "min-width: 400px; height: 400px; margin: 0 auto"}
       / /graph
-
-      %table.table.table-condensed
+      %hr
+      %table.table.table-condensed.table-striped.table-bordered
         %thead
           %tr
             %th.span1
-            %th.span2 Contibuter
-            %th Commit
+            %th.span2 Contributor
+            %th Commit message
         %tbody
           %tr{"ng-repeat" => "commit in commits"}
-            %td= image_tag("https://secure.gravatar.com/avatar/{{commit.author.gravatar_id}}", size: '30x30')
+            %td= image_tag("https://secure.gravatar.com/avatar/{{commit.author.gravatar_id}}", size: '30x30', class: "commitAuthorImage")
             %td.commitAuthorName= link_to "{{commit.commit.author.name}}", "{{commit.author.html_url}}", target: '_blank'
             %td= link_to "{{commit.commit.message}}", "{{commit.html_url}}", target: '_blank'
  
@@ -84,8 +81,9 @@
     %footer
       Designed and developed by
       = link_to '@christianrojas', 'http://www.twitter.com/christianrojas', target: '_blank'
-      \/
+      \-
       = link_to '@tangosource', 'http://www.twitter.com/tangosource', target: '_blank'
       challenge
-
+    %br
+    %br
   / /footer
