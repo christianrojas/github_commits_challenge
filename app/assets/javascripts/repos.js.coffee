@@ -124,7 +124,6 @@ App.factory "Repo", ["$resource", ($resource) ->
 
   # Create a new record in the DB of the repo
   register_repo = ->
-    console.log 'register_repo' #  <----- DELETE THIS LINE
     input = root.query.split('/')
     Repo.save repo: input[1], account: input[0], chain_obj_notation: root.json_objs, ((resource) ->
       root.id = resource.id
