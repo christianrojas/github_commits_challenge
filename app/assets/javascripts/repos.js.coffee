@@ -4,6 +4,7 @@ root = exports ? this
 root.query     = -> 0
 root.sha       = -> ""
 root.json_objs = -> ""
+root.id        = -> 0
 
 # Module App
 App = angular.module("tangoSourceChallenge", ["ngResource"])
@@ -22,15 +23,10 @@ App.factory "Repo", ["$resource", ($resource) ->
 
 # Main controller
 @tangoSourceChallengeCtrl = ["$scope", "$http", "Repo", ($scope, $http, Repo)->
-
+  
   # SCOPE ACTIONS & METHODS
   # -------------------------------------------------- 
-  $scope.repos = Repo.query() # Get all repos in the model
-
-  $scope.process_request = ->
-    root.query = $scope.newQuery.query # Sets the global variable 
-    check_repos_list()
-
+  
   $scope.validate_input_query = ->
     # Regular Expresion to validate 'account/repo'
     # Only one / and - inside words
@@ -39,10 +35,12 @@ App.factory "Repo", ["$resource", ($resource) ->
       $scope.inputError = false
     else
       $scope.inputError = true
-      console.log regExp.test($scope.newQuery.query)
 
-  # LOCAL METHODS
-  # -------------------------------------------------- 
+  $scope.process_request = ->
+    root.query = $scope.newQuery.query # Sets the global variable 
+    show_info_notification()
+    check_repos_list()
+  
   check_repos_list = -> # Find if the new repo request already exist
     $http.get("/repos"
     ).then ((response) ->
@@ -55,93 +53,14 @@ App.factory "Repo", ["$resource", ($resource) ->
       if flag then get_repo_data(repo.id) else check_remote_repo()
     ), (error) ->
 
+  # Get data from DB
   get_repo_data = (id) -> # Get registred repo data
     $http.get("/repos/#{id}"
     ).then ((response) ->
       get_unique_repo_days(response.data)
     ), (error) ->
 
-  get_unique_repo_days = (data) ->
-    root.json_objs   = jQuery.parseJSON(data.chain_obj_notation)
-    crude_days_array = []
-    uniqueDays       = []
-    
-    # Fix date string for all commits
-    for commit in root.json_objs
-      crude_days_array.push(moment(commit.commit.author.date))
-
-    # Get the unique days
-    $.each crude_days_array, (i, value) -> 
-      value = value.format('YYYY-MM-DD')
-      uniqueDays.push value if $.inArray(value, uniqueDays) is -1
-
-    $scope.days = []
-    for day in uniqueDays
-      formated = moment(day).format("dddd, MMMM D YYYY")
-      $scope.days.push({day: formated, value: day })
-
-    $scope.dayPicker = $scope.days[0] # Initial value for the select
-
-  get_day_commits = (day) ->
-    day_commits = []
-    for commit in root.json_objs
-      if moment(commit.commit.author.date).format('YYYY-MM-DD') is day.value
-        day_commits.push(commit)
-    return day_commits
-
-  $scope.make_day_graph = () ->
-    hours   = []
-    count   = []
-    counter = 0 
-    size    = get_day_commits($scope.dayPicker).length
-    $.each get_day_commits($scope.dayPicker).reverse(), (i, value) -> # Get the unique hours
-      value = moment(value.commit.author.date).format('ha')
-      
-      if $.inArray(value, hours) is -1
-        hours.push value
-        count.push counter if counter isnt 0
-        counter = 0
-        counter++
-        count.push counter if i is size - 1
-      else
-        counter++
-        count.push counter if i is size - 1
-
-    $("#container").highcharts
-      title:
-        text: "Daily commits per hour"
-        x: -20 #center
-      subtitle:
-        text: "Source: Github Repository [ christianrojas/firewool ]"
-        x: -20
-      xAxis:
-        categories: hours # Unique hours array
-      yAxis:
-        title:
-          text: "Commits (Hour)"
-        plotLines: [
-          value: 0
-          width: 1
-        ]
-      tooltip:
-        enabled: true
-      legend: false
-      series: [
-        name: "Commits"
-        data: count # Count by hours array
-        color: "#2eaced"
-      ]
-
-  register_repo = -> # Create a new record in the database
-    input = root.query.split('/')
-    Repo.save repo: input[1], account: input[0], chain_obj_notation: root.json_objs, ((resource) ->
-      $scope.repos.push resource
-      $scope.newRepo = {}
-    ), (response) ->
-      console.log "Error: " + response.status
-
-  # REMOTE METHODS
-  # --------------------------------------------------
+  # Check if the given repo exist in github
   check_remote_repo = ->
     $.ajax "https://api.github.com/repos/#{root.query}",
       type: 'GET'
@@ -149,9 +68,22 @@ App.factory "Repo", ["$resource", ($resource) ->
       success: () ->
          get_remote_repo_commits()
       error: () ->
-        # TODO Mostrar mensaje No se encontro este deposito.
-        console.log "Deposito no existe"
+        show_error_notification()        
 
+  show_error_notification= () ->
+    $("#queryResults").hide()
+    $("#infoNotification").hide()
+    $("#errorNotification").show()
+    $("#notifications").show()
+
+  show_info_notification= () ->
+    $("#notifications").show()
+    $("#blankState").hide()
+    $("#notifications").show()
+    $("#infoNotification").show()
+    $("#errorNotification").hide()
+
+  # Get commits data of the repo with SHA pagination
   get_remote_repo_commits = -> # Get all commits from a github repo
     flag      = true # Loop control
     root.sha  = ""
@@ -180,10 +112,98 @@ App.factory "Repo", ["$resource", ($resource) ->
         error: (request, status, error) ->
 
       break if flag is false # Brake if it's the last request
-
     root.json_objs += ']' # close json Object
-    
     register_repo() # We are ready to register the new repo request in to DB
 
-  get_repo_data(53) # <---- DELETE THIS LINE / JUST TESTING
+  # Create a new record in the DB of the repo
+  register_repo = ->
+    input = root.query.split('/')
+    Repo.save repo: input[1], account: input[0], chain_obj_notation: root.json_objs, ((resource) ->
+      root.id = resource.id
+      $scope.repos.push resource
+      $scope.newRepo = {}
+      get_repo_data(root.id)
+    ), (response) ->
+      console.log "Error: " + response.status
+
+  get_unique_repo_days = (data) ->
+    root.json_objs   = jQuery.parseJSON(data.chain_obj_notation)
+    crude_days_array = []
+    uniqueDays       = []
+
+    # Fix date string for all commits
+    for commit in root.json_objs
+      crude_days_array.push(moment(commit.commit.author.date))
+
+    # Get the unique days
+    $.each crude_days_array, (i, value) -> 
+      value = value.format('YYYY-MM-DD')
+      uniqueDays.push value if $.inArray(value, uniqueDays) is -1
+
+    $scope.days = []
+    for day in uniqueDays
+      formated = moment(day).format("dddd, MMMM D YYYY")
+      $scope.days.push({day: formated, value: day })
+
+    $scope.dayPicker = $scope.days[0] # Initial value for the select
+
+    # Action
+    $scope.commitsCount = root.json_objs.length
+    $scope.accountRepo = root.query.split('/')
+    $("#notifications").hide()
+    $("#queryResults").show()
+    $scope.make_day_graph() # Make the graph of the firts option [0]
+
+  get_day_commits = (day) ->
+    day_commits = []
+    for commit in root.json_objs
+      if moment(commit.commit.author.date).format('YYYY-MM-DD') is day.value
+        day_commits.push(commit)
+    $scope.commits = day_commits
+    return day_commits
+
+  $scope.make_day_graph = () ->
+    hours   = []
+    count   = []
+    counter = 0 
+    size    = get_day_commits($scope.dayPicker).length
+
+    $.each get_day_commits($scope.dayPicker).reverse(), (i, value) -> # Get the unique hours
+      value = moment(value.commit.author.date).format('ha')
+      
+      if $.inArray(value, hours) is -1
+        hours.push value
+        count.push counter if counter isnt 0
+        counter = 0
+        counter++
+        count.push counter if i is size - 1
+      else
+        counter++
+        count.push counter if i is size - 1
+
+    # Graph Setup
+    $("#container").highcharts
+      title:
+        text: "Daily commits per hour"
+        x: -20 #center
+      subtitle:
+        text: "Source: Github Repository [ christianrojas/firewool ]"
+        x: -20
+      xAxis:
+        categories: hours # Unique hours array
+      yAxis:
+        title:
+          text: "Commits (Hour)"
+        plotLines: [
+          value: 0
+          width: 1
+        ]
+      tooltip:
+        enabled: true
+      legend: false
+      series: [
+        name: "Commits"
+        data: count # Count by hours array
+        color: "#2eaced"
+      ]
 ]
