@@ -53,6 +53,7 @@ App.factory "Repo", ["$resource", ($resource) ->
         if root.query is "#{repo.account}/#{repo.repo}"
           flag = true
           id   = repo.id
+        break if flag is true
       if flag then get_repo_data(repo.id) else check_remote_repo()
     ), (error) ->
 
@@ -194,13 +195,13 @@ App.factory "Repo", ["$resource", ($resource) ->
         text: "Daily commits per hour"
         x: -20 #center
       subtitle:
-        text: "Source: Github Repository [ #{$scope.accountRepo[0]}/#{$scope.accountRepo[1]} ] /  Date: #{$scope.dayPicker.day}"
+        text: "Github repo [ #{$scope.accountRepo[0]}/#{$scope.accountRepo[1]} ] /  Date: #{$scope.dayPicker.day} / Count: #{$scope.commits.length}"
         x: -20
       xAxis:
         categories: hours # Unique hours array
       yAxis:
         title:
-          text: "Commits by day"
+          text: "Commits"
         plotLines: [
           value: 0
           width: 1
