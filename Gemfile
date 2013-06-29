@@ -44,10 +44,6 @@ end
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'better_errors'
-gem "binding_of_caller"
-
 # Haml support
 gem 'haml'
 gem "haml-rails"
-gem 'pry'
