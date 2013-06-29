@@ -92,8 +92,8 @@ App.factory "Repo", ["$resource", ($resource) ->
 
   # Get commits data of the repo with SHA pagination
   get_remote_repo_commits = -> # Get all commits from a github repo
-    flag      = true # Loop control
-    root.sha  = ""
+    flag           = true # Loop control
+    root.sha       = ""
     root.json_objs = ""
 
     loop      
@@ -124,11 +124,10 @@ App.factory "Repo", ["$resource", ($resource) ->
 
   # Create a new record in the DB of the repo
   register_repo = ->
+    console.log 'register_repo' #  <----- DELETE THIS LINE
     input = root.query.split('/')
     Repo.save repo: input[1], account: input[0], chain_obj_notation: root.json_objs, ((resource) ->
       root.id = resource.id
-      $scope.repos.push resource
-      $scope.newRepo = {}
       get_repo_data(root.id)
     ), (response) ->
       console.log "Error: " + response.status
