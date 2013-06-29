@@ -1,16 +1,65 @@
-# TangoSource Challenge
-Reto impuesto para medir habilidades en el desarrollo de una implementación.
 
-#### Descripcion del reto:
+# GitHub Density Graph - Challenge
+
+This is a challenge that [tangosource](http://github.com/tangosource "tangosource github account") give me to measure my development skills.
+
+
+## What is the goal?
+I have to use the Github API to get a repository information with their commits. Later the application show you some options to  get the data grouped by days.
+
+## Challenge request: (spanish)
 Utilizando la API de Github crear una aplicación que analice la densidad de commits en un día por medio de una gráfica, cualquier repositorio puede ser especificado en la pagina.(Idealmente deberíamos guardar la información de la densidad de commits de los repositorios para no consumir requests futuros hacia github.
 
-##### Wireframe:
+##### This is the wireframe:
+
 ![alt text](http://christianrojas.s3.amazonaws.com/Git%20graph.png "wireframe")
 
-##### Limitations
-* Solo se pueden realizar peticiones de depositos publicos.
-* La cantidad de peticiones por hora tiene un limite de 60, ya que no estamos autenticando al usuario con una cuenta actual de github. Un usuario autenticado puede tener 5000 por hora.
-* La cantidad de commits por peticion es de max 100. Ej: Un deposito como rails/rails el cual cuenta con mas de 1000+ commits necesitarian 10+ peticiones.
 
-##### Presenta:
-Christian Rojas @christianrojas
+## Implementation
+
+I decided to use [Ruby on Rails 4](http://rubyonrails.org/ "Ruby on Rails 4") and [AngularJS](http://angularjs.org/ "AngularJS") because i don't have any projects with this rails version and this awesome JS framework and this is my way to learn something new, by the way i love it.
+
+
+## Screencast
+This is a short demo video of the current version features. 
+
+[![ScreenShot](http://christianrojas.s3.amazonaws.com/video_demo.png)](http://christianrojasgar.wistia.com/medias/thth0bn3ju)
+
+
+### Setup
+
+Clone this repo
+
+```
+$ git clone git@github.com:christianrojas/tangosource_challenge.git
+```
+
+Change into the app directory
+
+install or update your gem dependencies
+ 
+```
+$ bundle install
+```
+
+Prepare the database
+
+```
+$ rake db:setup
+```
+
+Start the rails server
+
+```
+$ rails start
+```
+
+Launch your web browser to 
+
+```
+$ open http://localhost:3000
+```
+
+### ToDo
+- Improve Rails Test Driven Development
+- Improve JS Test Driven Development
