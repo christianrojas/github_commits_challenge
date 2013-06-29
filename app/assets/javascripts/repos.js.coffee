@@ -5,6 +5,7 @@ root.query     = -> 0
 root.sha       = -> ""
 root.json_objs = -> ""
 root.id        = -> 0
+root.act_resp  = -> false
 
 # Module App
 App = angular.module("tangoSourceChallenge", ["ngResource"])
@@ -23,23 +24,25 @@ App.factory "Repo", ["$resource", ($resource) ->
 
 # Main controller
 @tangoSourceChallengeCtrl = ["$scope", "$http", "Repo", ($scope, $http, Repo)->
-  
+  $("#accountRepoQuery").focus() # focus input
+  $scope.inputError = true
+
   # SCOPE ACTIONS & METHODS
   # -------------------------------------------------- 
-  
   $scope.validate_input_query = ->
     # Regular Expresion to validate 'account/repo'
     # Only one / and - inside words
     regExp = /^\b[a-zA-Z0-9\-]+\b\/\b[a-zA-Z0-9\-]+\b$/
     if regExp.test($scope.newQuery.query)
-      $scope.inputError = false
+      $scope.inputError = false # if match
     else
-      $scope.inputError = true
+      $scope.inputError = true # has errors
 
   $scope.process_request = ->
-    root.query = $scope.newQuery.query # Sets the global variable 
-    show_info_notification()
-    check_repos_list()
+    if !$scope.inputError
+      root.query = $scope.newQuery.query # Sets the global variable 
+      show_info_notification()
+      check_repos_list()
   
   check_repos_list = -> # Find if the new repo request already exist
     $http.get("/repos"
@@ -66,22 +69,25 @@ App.factory "Repo", ["$resource", ($resource) ->
       type: 'GET'
       dataType: 'json'
       success: () ->
-         get_remote_repo_commits()
+        get_remote_repo_commits()
       error: () ->
         show_error_notification()        
 
   show_error_notification= () ->
-    $("#queryResults").hide()
+    if root.act_resp
+      $("#queryResults").fadeOut(500)
     $("#infoNotification").hide()
     $("#errorNotification").show()
     $("#notifications").show()
 
   show_info_notification= () ->
-    $("#notifications").show()
+    if root.act_resp is true
+      $("#queryResults").hide()
     $("#blankState").hide()
-    $("#notifications").show()
-    $("#infoNotification").show()
+    $("#notifications").delay(3000).show()
     $("#errorNotification").hide()
+    $("#infoNotification").show()
+    $("#queryResults").hide()
 
   # Get commits data of the repo with SHA pagination
   get_remote_repo_commits = -> # Get all commits from a github repo
@@ -153,6 +159,7 @@ App.factory "Repo", ["$resource", ($resource) ->
     $("#notifications").hide()
     $("#queryResults").show()
     $scope.make_day_graph() # Make the graph of the firts option [0]
+    root.act_resp = true # flag active results
 
   get_day_commits = (day) ->
     day_commits = []
@@ -187,13 +194,13 @@ App.factory "Repo", ["$resource", ($resource) ->
         text: "Daily commits per hour"
         x: -20 #center
       subtitle:
-        text: "Source: Github Repository [ christianrojas/firewool ]"
+        text: "Source: Github Repository [ #{$scope.accountRepo[0]}/#{$scope.accountRepo[1]} ] /  Date: #{$scope.dayPicker.day}"
         x: -20
       xAxis:
         categories: hours # Unique hours array
       yAxis:
         title:
-          text: "Commits (Hour)"
+          text: "Commits by day"
         plotLines: [
           value: 0
           width: 1
