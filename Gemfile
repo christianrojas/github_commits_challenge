@@ -50,3 +50,4 @@ gem "binding_of_caller"
 # Haml support
 gem 'haml'
 gem "haml-rails"
+gem 'pry'
