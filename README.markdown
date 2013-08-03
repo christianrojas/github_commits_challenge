@@ -1,7 +1,6 @@
-
-# GitHub Density Graph - Challenge
-
-This is a challenge that [tangosource](http://github.com/tangosource "tangosource github account") give me to measure my development skills.
+# GitHub Commits by Day
+## Graph
+### Challenge
 
 
 ## What is the goal?
@@ -14,17 +13,15 @@ Utilizando la API de Github crear una aplicación que analice la densidad de com
 
 ![alt text](http://christianrojas.s3.amazonaws.com/Git%20graph.png "wireframe")
 
-
 ## Implementation
 
 I decided to use [Ruby on Rails 4](http://rubyonrails.org/ "Ruby on Rails 4") and [AngularJS](http://angularjs.org/ "AngularJS") because i don't have any projects with this rails version and this awesome JS framework and this is my way to learn something new, by the way i love it.
 
 
-## Screencast
-This is a short demo video of the current version features. 
+## Demo
+This is a short demo video of the current version features.
 
 [![ScreenShot](http://christianrojas.s3.amazonaws.com/video_demo.png)](http://christianrojasgar.wistia.com/medias/thth0bn3ju)
-
 
 ### Setup
 
