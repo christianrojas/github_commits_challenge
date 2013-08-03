@@ -1,6 +1,5 @@
-# GitHub Commits by Day
-## Graph
-### Challenge
+# GitHub Commits by day - Challenge
+### Graph
 
 
 ## What is the goal?
