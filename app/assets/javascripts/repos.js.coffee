@@ -8,7 +8,7 @@ root.id        = -> 0
 root.act_resp  = -> false
 
 # Module App
-App = angular.module("tangoSourceChallenge", ["ngResource"])
+App = angular.module("githubCommitsChallenge", ["ngResource"])
 
 # App Config
 App.config ["$httpProvider", ($httpProvider) ->
@@ -23,7 +23,7 @@ App.factory "Repo", ["$resource", ($resource) ->
 ]
 
 # Main controller
-@tangoSourceChallengeCtrl = ["$scope", "$http", "Repo", ($scope, $http, Repo)->
+@githubCommitsChallengeCtrl = ["$scope", "$http", "Repo", ($scope, $http, Repo)->
   $("#accountRepoQuery").focus() # focus input
   $scope.inputError = true
 

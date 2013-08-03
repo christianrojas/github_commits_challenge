@@ -1,5 +1,5 @@
 development:
   adapter: postgresql
-  database: tangosource_challenge_development
+  database: github_commits_challenge_development
   host: localhost
-  
+

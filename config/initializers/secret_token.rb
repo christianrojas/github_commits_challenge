@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-TangosourceChallenge::Application.config.secret_key_base = '53bbae855ef1ee935fdcc2d40855bfa487fb56ef4b75a4afd27bb79b7e7819e110ebe9ac3a1f75af3739e469d6920879a4d3180ab2d7a565fcb354a785e19ea0'
+GithubCommitsChallenge::Application.config.secret_key_base = '53bbae855ef1ee935fdcc2d40855bfa487fb56ef4b75a4afd27bb79b7e7819e110ebe9ac3a1f75af3739e469d6920879a4d3180ab2d7a565fcb354a785e19ea0'

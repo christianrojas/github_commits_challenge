@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-TangosourceChallenge::Application.load_tasks
+GithubCommitsChallenge::Application.load_tasks

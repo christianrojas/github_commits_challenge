@@ -1,3 +1,3 @@
 # Be sure to restart your server when you modify this file.
 
-TangosourceChallenge::Application.config.session_store :cookie_store, key: '_tangosource_challenge_session'
+GithubCommitsChallenge::Application.config.session_store :cookie_store, key: '_github_commits_challenge_session'

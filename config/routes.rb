@@ -1,4 +1,4 @@
-TangosourceChallenge::Application.routes.draw do
+GithubCommitsChallenge::Application.routes.draw do
   root :to => 'repos#index'
 
   resources :repos

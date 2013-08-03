@@ -27,7 +27,7 @@ This is a short demo video of the current version features.
 Clone this repo
 
 ```
-$ git clone git@github.com:christianrojas/tangosource_challenge.git
+$ git clone git@github.com:christianrojas/github_commits_challenge.git
 ```
 
 Change into the app directory
