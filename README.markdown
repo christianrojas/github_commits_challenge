@@ -59,3 +59,7 @@ $ open http://localhost:3000
 ### ToDo
 - Improve Rails Test Driven Development
 - Improve JS Test Driven Development
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/christianrojas/github_commits_challenge/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
